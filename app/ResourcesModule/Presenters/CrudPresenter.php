@@ -20,18 +20,19 @@ class CrudPresenter extends ResourcePresenter
 
     public function actionRead()
     {
-        $this->resource[] = ['success' => ($this->database->table('user')->get($this->id) ? 'true' : 'false')];
+        $user = $this->database->table('user')->get($this->id);
+        $this->resource[] = $user ? $user : ['success' => false];
         $this->sendResource();
     }
 
     public function actionUpdate()
     {
-        
+
     }
 
     public function actionDelete()
     {
-        $this->resource[] = ['success' => ($this->database->table('user')->where('id=?', $this->id)->delete() ? 'true' : 'false')];
+        $this->resource[] = ['success' => ($this->database->table('user')->where('id =?', $this->id)->delete() ? true : false)];
         $this->sendResource();
     }
 
