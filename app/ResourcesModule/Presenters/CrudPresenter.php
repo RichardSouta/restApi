@@ -2,33 +2,37 @@
 namespace App\ResourcesModule\Presenters;
 
 use Drahak\Restful\Application\UI\ResourcePresenter;
+use Nette\Database\Context;
+use App\ResourcesModule\User;
 
-/**
- * CRUD resource presenter
- * @package ResourcesModule
- * @author Drahomír Hanák
- */
 class CrudPresenter extends ResourcePresenter
 {
+    /** @var Context @inject */
+    public $database;
+
+    /** @var int @persistent */
+    public $id;
 
     public function actionCreate()
     {
-        $this->resource->action = 'Create';
+
     }
 
     public function actionRead()
     {
-        $this->resource->action = 'Read';
+        $this->resource[] = ['success' => ($this->database->table('user')->get($this->id) ? 'true' : 'false')];
+        $this->sendResource();
     }
 
     public function actionUpdate()
     {
-        $this->resource->action = 'Update';
+        
     }
 
     public function actionDelete()
     {
-        $this->resource->action = 'Delete';
+        $this->resource[] = ['success' => ($this->database->table('user')->where('id=?', $this->id)->delete() ? 'true' : 'false')];
+        $this->sendResource();
     }
 
 }

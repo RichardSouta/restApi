@@ -17,7 +17,7 @@ class RouterFactory
 	public static function createRouter()
 	{
 		$router = new RouteList;
-        $router[] = new CrudRoute('<module>/crud', 'Crud');
+        $router[] = new CrudRoute('<module>/crud[/<id>]', 'Crud');
 
 
 
