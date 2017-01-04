@@ -12,13 +12,15 @@ class UserCrudPresenter extends ResourcePresenter
     /** @var int @persistent */
     public $id;
 
+    const ErrorMessage = ['success' => false];
+
     public function actionCreate()
     {
         try {
             $user = $this->database->table('user')->insert($this->getInput());
             $this->resource[] = $user;
         } catch (\Exception $e) {
-            $this->resource[] = ['success' => false];
+            $this->resource[] = self::ErrorMessage;
         }
         $this->sendResource();
     }
@@ -30,30 +32,39 @@ class UserCrudPresenter extends ResourcePresenter
         } else {
             $user = $this->database->table('user')->get($this->id);
         }
-        $this->resource[] = $user ? $user : ['success' => false];
+        $this->resource[] = $user ? $user : self::ErrorMessage;
         $this->sendResource();
     }
 
     public function actionUpdate()
     {
-        $this->isIdSet();
-        $this->resource[] = ['success' => ($this->database->table('user')->where('id =?', $this->id)->update($this->getInput()) ? true : false)];
+        $this->returnErrorMessageIfIdEmpty();
+        $this->resource[] = $this->getSuccessArray($this->database->table('user')->where('id =?', $this->id)->update($this->getInput()));
         $this->sendResource();
     }
 
     public function actionDelete()
     {
-        $this->isIdSet();
-        $this->resource[] = ['success' => ($this->database->table('user')->where('id =?', $this->id)->delete() ? true : false)];
+        $this->returnErrorMessageIfIdEmpty();
+        $this->resource[] = $this->getSuccessArray($this->database->table('user')->where('id =?', $this->id)->delete());
         $this->sendResource();
     }
 
-    private function isIdSet()
+    private function returnErrorMessageIfIdEmpty()
     {
         if (is_null($this->id)) {
-            $this->resource[] = ['success' => false];
+            $this->resource[] = self::ErrorMessage;
             $this->sendResource();
         }
+    }
+
+    /**
+     * @param $rows int
+     * @return array
+     */
+    private function getSuccessArray($rows)
+    {
+        return ['success' => ($rows ? true : false)];
     }
 
 }
