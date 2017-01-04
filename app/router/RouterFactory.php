@@ -17,7 +17,7 @@ class RouterFactory
 	public static function createRouter()
 	{
 		$router = new RouteList;
-        $router[] = new CrudRoute('<module>/crud[/<id>]', 'Crud');
+        $router[] = new CrudRoute('api/users[/<id>]', 'Resources:UserCrud:');
 
         $router[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default');
 		return $router;

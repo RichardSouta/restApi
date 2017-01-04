@@ -4,7 +4,7 @@ namespace App\ResourcesModule\Presenters;
 use Drahak\Restful\Application\UI\ResourcePresenter;
 use Nette\Database\Context;
 
-class CrudPresenter extends ResourcePresenter
+class UserCrudPresenter extends ResourcePresenter
 {
     /** @var Context @inject */
     public $database;
