@@ -19,16 +19,6 @@ class RouterFactory
 		$router = new RouteList;
         $router[] = new CrudRoute('<module>/crud[/<id>]', 'Crud');
 
-
-
-
-
-
-
-
-
-
-
         $router[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default');
 		return $router;
 	}
